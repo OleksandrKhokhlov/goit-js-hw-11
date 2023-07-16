@@ -36,6 +36,7 @@ async function onFormSubmit(evt) {
     Notiflix.Notify.success(
       `Hooray! We found ${galleryImgs.data.totalHits} images.`
     );
+
     const markupCardsPhotos = await markupCardPoto(galleryImgs.data.hits);
 
     galleryConteinerRef.innerHTML = await markupCardsPhotos;
@@ -46,6 +47,16 @@ async function onFormSubmit(evt) {
 
     lightbox.refresh();
 
+    if (jsonPlaceholderApi.totalHits < jsonPlaceholderApi.perPage) {
+      loadMoreBtnRef.classList.add('visually-hidden');
+      Notiflix.Report.info(
+        `We're sorry`,
+        `but you've reached the end of search results.`,
+        'Okay'
+      );
+      return;
+    }
+
     loadMoreBtnRef.classList.remove('visually-hidden');
   } catch (error) {
     Notiflix.Report.info(
@@ -53,6 +64,7 @@ async function onFormSubmit(evt) {
       'there are no images matching your search query.<br/><br/> Please try again.',
       'Okay'
     );
+    Notiflix.Loading.remove();
     galleryConteinerRef.innerHTML = '';
   }
 }
@@ -60,11 +72,11 @@ async function onFormSubmit(evt) {
 async function onLoadMoreClick() {
   jsonPlaceholderApi.page += 1;
 
-   Notiflix.Loading.dots();
+  Notiflix.Loading.dots();
 
   await loadMoreBtn();
 
-   Notiflix.Loading.remove();
+  Notiflix.Loading.remove();
 
   smoothScroll();
 

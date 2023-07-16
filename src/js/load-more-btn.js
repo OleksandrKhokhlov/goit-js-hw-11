@@ -11,19 +11,19 @@ export async function loadMoreBtn() {
   const totalPages = Math.ceil(
     jsonPlaceholderApi.totalHits / jsonPlaceholderApi.perPage
   );
+  if (totalPages >= jsonPlaceholderApi.page) {
+    const galleryImgs = await getGalleryImgs();
 
-  if (totalPages < jsonPlaceholderApi.page) {
-    loadMoreBtnRef.classList.add('visually-hidden');
-    Report.info(
-      `We're sorry`,
-      `but you've reached the end of search results.`,
-      'Okay'
-    );
-    return;
+    const markupCardsPhotos = markupCardPoto(galleryImgs.data.hits);
+
+    galleryConteinerRef.insertAdjacentHTML('beforeend', markupCardsPhotos);
+
   }
-  const galleryImgs = await getGalleryImgs();
-   
-  const markupCardsPhotos = markupCardPoto(galleryImgs.data.hits);
 
-  galleryConteinerRef.insertAdjacentHTML('beforeend', markupCardsPhotos);
+  loadMoreBtnRef.classList.add('visually-hidden');
+  Report.info(
+    `We're sorry`,
+    `but you've reached the end of search results.`,
+    'Okay'
+  );
 }
