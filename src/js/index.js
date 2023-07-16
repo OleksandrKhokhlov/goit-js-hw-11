@@ -25,6 +25,8 @@ async function onFormSubmit(evt) {
 
   jsonPlaceholderApi.page = 1;
 
+  Notiflix.Loading.dots();
+
   const galleryImgs = await getGalleryImgs();
 
   try {
@@ -37,6 +39,8 @@ async function onFormSubmit(evt) {
     const markupCardsPhotos = await markupCardPoto(galleryImgs.data.hits);
 
     galleryConteinerRef.innerHTML = await markupCardsPhotos;
+
+    Notiflix.Loading.remove();
 
     smoothScroll();
 
@@ -56,13 +60,15 @@ async function onFormSubmit(evt) {
 async function onLoadMoreClick() {
   jsonPlaceholderApi.page += 1;
 
+   Notiflix.Loading.dots();
+
   await loadMoreBtn();
+
+   Notiflix.Loading.remove();
 
   smoothScroll();
 
   lightbox.refresh();
-
 }
-
 
 export { inputEl, galleryConteinerRef, loadMoreBtnRef };
