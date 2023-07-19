@@ -17,7 +17,7 @@ export async function loadMoreBtn() {
     const markupCardsPhotos = markupCardPoto(galleryImgs.data.hits);
 
     galleryConteinerRef.insertAdjacentHTML('beforeend', markupCardsPhotos);
-
+    return;
   }
 
   loadMoreBtnRef.classList.add('visually-hidden');
